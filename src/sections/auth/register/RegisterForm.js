@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Stack, IconButton, InputAdornment, Alert } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
-import { useSnackbar } from 'notistack';
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
@@ -21,7 +20,6 @@ import { PATH_AUTH } from '../../../routes/paths';
 // ----------------------------------------------------------------------
 
 export default function RegisterForm() {
-  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const { register } = useAuth();
 
@@ -33,14 +31,12 @@ export default function RegisterForm() {
     username: Yup.string().required('用户名必填'),
     email: Yup.string().email('邮箱格式不正确').required('邮箱地址必填'),
     password: Yup.string().required('密码必填'),
-    authCode: Yup.string().required('验证码必填'),
   });
 
   const defaultValues = {
     username: '',
     email: '',
     password: '',
-    authCode: '',
   };
 
   const methods = useForm({
@@ -56,10 +52,8 @@ export default function RegisterForm() {
 
   const onSubmit = async (data) => {
     try {
-      console.log(data);
-      await register(data.username, data.email, data.password, data.authCode);
-      enqueueSnackbar('注册成功!');
-      navigate(PATH_AUTH.login, { replace: true });
+      await register(data.username, data.email, data.password);
+      navigate(`${PATH_AUTH.verify}/${data.email}`, { replace: true });
     } catch (error) {
       if (isMountedRef.current) {
         setError('afterSubmit', error);
@@ -89,8 +83,6 @@ export default function RegisterForm() {
             ),
           }}
         />
-        <RHFTextField name="authCode" label="验证码" />
-
         <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
           注 册
         </LoadingButton>

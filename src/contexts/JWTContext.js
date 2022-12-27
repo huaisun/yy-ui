@@ -70,12 +70,11 @@ function AuthProvider({ children }) {
     const initialize = async () => {
       try {
         const accessToken = window.localStorage.getItem('accessToken');
-
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
-          const response = await axios.get('/api/account/my-account');
-          const { user } = response.data;
+          const response = await axios.get('/api/auth/user/info');
+          const user = response.data.data;
 
           dispatch({
             type: 'INITIALIZE',
@@ -113,33 +112,35 @@ function AuthProvider({ children }) {
       email,
       password,
     });
-    const { accessToken, user } = response.data;
-
+    const { accessToken, user } = response.data.data;
     setSession(accessToken);
-    // dispatch({
-    //   type: 'LOGIN',
-    //   payload: {
-    //     user,
-    //   },
-    // });
+    dispatch({
+      type: 'LOGIN',
+      payload: {
+        user,
+      },
+    });
   };
 
-  const register = async (username, email, password, authCode) => {
+  const register = async (username, email, password) => {
     await axios.post('/api/auth/register', {
       username,
       email,
       password,
-      authCode,
     });
-    // const { user } = response.data;
+  };
 
-    // window.localStorage.setItem('accessToken', accessToken);
-    // dispatch({
-    //   type: 'REGISTER',
-    //   payload: {
-    //     user,
-    //   },
-    // });
+  const verify = async (email, verifyCode) => {
+    await axios.post('/api/auth/verify', {
+      email,
+      verifyCode,
+    });
+  };
+
+  const resend = async (email) => {
+    await axios.post('/api/auth/resend', {
+      email,
+    });
   };
 
   const logout = async () => {
@@ -155,6 +156,8 @@ function AuthProvider({ children }) {
         login,
         logout,
         register,
+        verify,
+        resend,
       }}
     >
       {children}

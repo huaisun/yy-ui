@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 // form
 import { useForm, Controller } from 'react-hook-form';
@@ -8,14 +8,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { OutlinedInput, Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import useAuth from '../../../hooks/useAuth';
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_AUTH } from '../../../routes/paths';
 
 // ----------------------------------------------------------------------
 
 export default function VerifyCodeForm() {
   const navigate = useNavigate();
-
+  const { verify } = useAuth();
+  const { email } = useParams();
   const { enqueueSnackbar } = useSnackbar();
 
   const VerifyCodeSchema = Yup.object().shape({
@@ -57,14 +59,11 @@ export default function VerifyCodeForm() {
 
   const onSubmit = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      console.log('code:', Object.values(data).join(''));
-
-      enqueueSnackbar('Verify success!');
-
-      navigate(PATH_DASHBOARD.root, { replace: true });
+      await verify(email, Object.values(data).join(''));
+      enqueueSnackbar('注册成功!');
+      navigate(PATH_AUTH.login, { replace: true });
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar(error.message, { variant: "error" });
     }
   };
 
@@ -138,7 +137,7 @@ export default function VerifyCodeForm() {
         disabled={!isValid}
         sx={{ mt: 3 }}
       >
-        Verify
+        验证
       </LoadingButton>
     </form>
   );
