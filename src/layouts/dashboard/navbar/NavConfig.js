@@ -21,6 +21,8 @@ const ICONS = {
   analytics: getIcon('ic_analytics'),
   dashboard: getIcon('ic_dashboard'),
   booking: getIcon('ic_booking'),
+  // 椰羊
+  home: getIcon('ic_home'),
 };
 
 const navConfig = [
@@ -29,6 +31,7 @@ const navConfig = [
   {
     subheader: 'general',
     items: [
+      { title: '首页', path: PATH_DASHBOARD.general.home, icon: ICONS.home},
       { title: 'app', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
       { title: 'e-commerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
       { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics },
