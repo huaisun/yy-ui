@@ -35,7 +35,6 @@ export default function RankData() {
     <Card
       sx={{
         mb: 3,
-        width: 360,
         position: 'relative',
         pl: 2,
         pr: 2,
@@ -59,15 +58,15 @@ export default function RankData() {
               secondary={null}
             />
             <ListItemSecondaryAction>
-              <IconButton size="small" edge="false" aria-label="star" onClick={() => linkWebsite(data.website)}>
+              <IconButton size="small" aria-label="star" onClick={() => linkWebsite(data.website)}>
                 <ViewIcon fontSize="small" />
               </IconButton>
               <TextNumber num={data.viewNumber} />
-              <IconButton size="small" edge="false" aria-label="star">
+              <IconButton size="small" aria-label="star">
                 <StarIcon fontSize="small" />
               </IconButton>
               <TextNumber num={data.starNumber} />
-              <IconButton size="small" edge="false" aria-label="star">
+              <IconButton size="small" aria-label="star">
                 <LikeIcon fontSize="small" />
               </IconButton>
               <TextNumber num={data.likeNumber} />

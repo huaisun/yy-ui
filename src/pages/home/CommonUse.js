@@ -1,45 +1,33 @@
 import List from '@mui/material/List';
+import { capitalCase } from 'change-case';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import IconButton from '@mui/material/IconButton';
-import { Typography, Link, Card, CardHeader } from '@mui/material';
+import { Typography, Link, Card, Tabs, Tab, Box } from '@mui/material';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Avatar from '@mui/material/Avatar';
+import { useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { StarIcon, LikeIcon, ViewIcon } from '../../theme/overrides/CustomIcons';
+import { TextNumber } from '../../utils/common';
+import Iconify from '../../components/Iconify';
 
-// 超过四位数的数字转化为w格式,如：38128 => 3.8w，381285 => 38.1w
-function formatCharCount(count) {
-  if (count <= 0 || count.isNaN) {
-    return '0';
-  }
-  const strCount = count.toString();
-  if (strCount.length >= 9) {
-    if (strCount.length >= 11) {
-      return '99亿+';
-    }
-    let prefix = strCount.substring(0, strCount.length - 8);
-    if (strCount.length === 9) {
-      prefix = `${prefix}.${strCount[1]}`;
-    }
-    return `${prefix}亿`;
-  }
-
-  if (strCount.length >= 5) {
-    let prefix = strCount.substring(0, strCount.length - 4);
-    if (strCount.length === 5) {
-      prefix = `${prefix}.${strCount[1]}`;
-    }
-    return `${prefix}万`;
-  }
-  return strCount;
-}
-
-function TextNumber(props) {
-  // eslint-disable-next-line react/prop-types
-  const { num } = props;
-  return <span style={{ fontSize: '12px' }}>{formatCharCount(num)}</span>;
-}
+const TabsWrapperStyle = styled('div')(({ theme }) => ({
+  // zIndex: 9,
+  // top: 0,
+  width: '100%',
+  display: 'flex',
+  // position: 'absolute',
+  backgroundColor: theme.palette.background.paper,
+  [theme.breakpoints.up('sm')]: {
+    justifyContent: 'center',
+  },
+  [theme.breakpoints.up('md')]: {
+    justifyContent: 'flex-end',
+    paddingRight: theme.spacing(3),
+  },
+}));
 
 export default function CommonUse() {
   const linkWebsite = (website) => {
@@ -63,17 +51,60 @@ export default function CommonUse() {
       starNumber: 12322323,
     },
   ];
+  const [spaceValue, setSpaceValue] = useState('1');
+
+  const handleChangeTab = (value) => {
+    setSpaceValue(value);
+  };
+
+  const PROFILE_TABS = [
+    {
+      value: '1',
+      name: '常用',
+      icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
+      component: <></>,
+    },
+    {
+      value: '2',
+      name: '空间1',
+      icon: <Iconify icon={'eva:heart-fill'} width={20} height={20} />,
+      component: <></>,
+    },
+    {
+      value: '3',
+      name: '空间2',
+      icon: <Iconify icon={'eva:people-fill'} width={20} height={20} />,
+      component: <></>,
+    },
+    {
+      value: '4',
+      name: '空间3',
+      icon: <Iconify icon={'ic:round-perm-media'} width={20} height={20} />,
+      component: <></>,
+    },
+  ];
   return (
     <Card
       sx={{
         mb: 3,
-        width: 360,
         position: 'relative',
         pl: 2,
         pr: 2,
       }}
     >
-      <CardHeader title="排行榜" />
+      <TabsWrapperStyle>
+        <Tabs
+          value={spaceValue}
+          onChange={(e, value) => handleChangeTab(value)}
+          scrollButtons="auto"
+          variant="scrollable"
+          allowScrollButtonsMobile
+        >
+          {PROFILE_TABS.map((tab) => (
+            <Tab disableRipple key={tab.value} value={tab.value} icon={tab.icon} label={tab.name} />
+          ))}
+        </Tabs>
+      </TabsWrapperStyle>
       <List sx={{ width: '100%', maxWidth: 360 }}>
         {rankData.map((data) => (
           <ListItem key={data.id} onClick={() => linkWebsite(data.website)}>
@@ -91,15 +122,15 @@ export default function CommonUse() {
               secondary={null}
             />
             <ListItemSecondaryAction>
-              <IconButton size="small" edge="false" aria-label="star" onClick={() => linkWebsite(data.website)}>
+              <IconButton size="small" aria-label="view" onClick={() => linkWebsite(data.website)}>
                 <ViewIcon fontSize="small" />
               </IconButton>
               <TextNumber num={data.viewNumber} />
-              <IconButton size="small" edge="false" aria-label="star">
+              <IconButton size="small" aria-label="star">
                 <StarIcon fontSize="small" />
               </IconButton>
               <TextNumber num={data.starNumber} />
-              <IconButton size="small" edge="false" aria-label="star">
+              <IconButton size="small" aria-label="like">
                 <LikeIcon fontSize="small" />
               </IconButton>
               <TextNumber num={data.likeNumber} />
