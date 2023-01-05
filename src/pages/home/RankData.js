@@ -1,18 +1,7 @@
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import IconButton from '@mui/material/IconButton';
-import { Typography, Link, Card, CardHeader } from '@mui/material';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
-import Avatar from '@mui/material/Avatar';
-import { StarIcon, LikeIcon, ViewIcon } from '../../theme/overrides/CustomIcons';
-import { TextNumber } from '../../utils/common';
+import { Card, CardHeader, List } from '@mui/material';
+import WebsiteList from '../../components/home/WebsiteList';
 
 export default function RankData() {
-  const linkWebsite = (website) => {
-    window.open(website, '_blank');
-  };
   const rankData = [
     {
       id: 1,
@@ -38,40 +27,20 @@ export default function RankData() {
         position: 'relative',
         pl: 2,
         pr: 2,
+        overflow: 'auto',
       }}
     >
       <CardHeader title="排行榜" />
-      <List sx={{ width: '100%', maxWidth: 360 }}>
+      <List sx={{ minWidth: 320 }}>
         {rankData.map((data) => (
-          <ListItem key={data.id} onClick={() => linkWebsite(data.website)}>
-            <ListItemAvatar>
-              <Avatar style={{ width: 20, height: 20 }} alt={data.name} src={`${data.website}/favicon.ico`} />
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <Typography>
-                  <Link href={data.website} target="_blank" rel="noopener">
-                    {data.name}
-                  </Link>
-                </Typography>
-              }
-              secondary={null}
-            />
-            <ListItemSecondaryAction>
-              <IconButton size="small" aria-label="star" onClick={() => linkWebsite(data.website)}>
-                <ViewIcon fontSize="small" />
-              </IconButton>
-              <TextNumber num={data.viewNumber} />
-              <IconButton size="small" aria-label="star">
-                <StarIcon fontSize="small" />
-              </IconButton>
-              <TextNumber num={data.starNumber} />
-              <IconButton size="small" aria-label="star">
-                <LikeIcon fontSize="small" />
-              </IconButton>
-              <TextNumber num={data.likeNumber} />
-            </ListItemSecondaryAction>
-          </ListItem>
+          <WebsiteList
+            key={data.id}
+            website={data.website}
+            name={data.name}
+            viewNumber={data.viewNumber}
+            likeNumber={data.likeNumber}
+            starNumber={data.starNumber}
+          />
         ))}
       </List>
     </Card>

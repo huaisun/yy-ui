@@ -28,5 +28,5 @@ export function formatCharCount(count) {
 export function TextNumber(props) {
   // eslint-disable-next-line react/prop-types
   const { num } = props;
-  return <span style={{ fontSize: '12px' }}>{formatCharCount(num)}</span>;
+  return <span>{formatCharCount(num)}</span>;
 }
