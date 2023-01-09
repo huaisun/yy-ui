@@ -4,13 +4,11 @@ import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Iconify from '../../components/Iconify';
 import WebsiteList from '../../components/home/WebsiteList';
+import WebsiteDialog from '../../components/home/WebsiteDialog';
 
 const TabsWrapperStyle = styled('div')(({ theme }) => ({
-  // zIndex: 9,
-  // top: 0,
   width: '100%',
   display: 'flex',
-  // position: 'absolute',
   backgroundColor: theme.palette.background.paper,
   [theme.breakpoints.up('sm')]: {
     justifyContent: 'center',
@@ -46,6 +44,15 @@ export default function CommonUse() {
     setSpaceValue(value);
   };
 
+  const [visible, setVisible] = useState(false);
+
+  const openDialog = () => {
+    setVisible(true);
+  };
+
+  const closeDialog = () => {
+    setVisible(false);
+  };
   const PROFILE_TABS = [
     {
       value: '1',
@@ -104,10 +111,12 @@ export default function CommonUse() {
               viewNumber={data.viewNumber}
               likeNumber={data.likeNumber}
               starNumber={data.starNumber}
+              handleModalOpen={openDialog}
             />
           ))}
         </Stack>
       </List>
+      <WebsiteDialog visible={visible} closeDialog={closeDialog} />
     </Card>
   );
 }

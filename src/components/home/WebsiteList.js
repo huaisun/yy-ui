@@ -20,13 +20,12 @@ import { useState } from 'react';
 import {
   LikeIcon,
   StarIcon,
-  ViewIcon,
   EditIcon,
-  CommentIcon,
   StarOutlineIcon,
   LikeOutlineIcon,
 } from '../../theme/overrides/CustomIcons';
 import { TextNumber } from '../../utils/common';
+import Iconify from '../Iconify';
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -76,6 +75,10 @@ export default function WebsiteList(props) {
   const moreClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const editWebsite = () => {
+    handleClose();
+    props.handleModalOpen();
+  };
   return (
     <ListItem sx={{ width: 320 }} onClick={() => linkWebsite(website)}>
       <ListItemAvatar>
@@ -110,21 +113,17 @@ export default function WebsiteList(props) {
               <TextNumber num={likeNumber} />
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              {starNumber > 10000 ? <StarIcon htmlColor="#e3b341" /> : <StarOutlineIcon />}
+              {starNumber > 10000 ? <StarIcon htmlColor="#ff6699" /> : <StarOutlineIcon />}
               <TextNumber num={starNumber} />
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <ViewIcon />
+              <Iconify icon={'ph:mouse-duotone'} sx={{ width: 18, height: 18, mr: 1.5 }} />
               <TextNumber num={viewNumber} />
             </MenuItem>
             <Divider sx={{ my: 0.5 }} />
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={editWebsite}>
               <EditIcon />
               编辑
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <CommentIcon />
-              评论
             </MenuItem>
           </StyledMenu>
         </Stack>
@@ -139,4 +138,5 @@ WebsiteList.propTypes = {
   viewNumber: PropTypes.any,
   starNumber: PropTypes.any,
   likeNumber: PropTypes.any,
+  handleModalOpen: PropTypes.func,
 };

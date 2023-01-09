@@ -1,9 +1,7 @@
 // @mui
-import { Stack, Button, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 // hooks
 import useAuth from '../../../hooks/useAuth';
-// routes
-import { PATH_DOCS } from '../../../routes/paths';
 // assets
 import { DocIllustration } from '../../../assets';
 
@@ -21,17 +19,9 @@ export default function NavbarDocs() {
 
       <div>
         <Typography gutterBottom variant="subtitle1">
-          Hi, {user?.displayName}
-        </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          Need help?
-          <br /> Please check our docs
+          欢迎, {user?.username}
         </Typography>
       </div>
-
-      <Button href={PATH_DOCS} target="_blank" rel="noopener" variant="contained">
-        Documentation
-      </Button>
     </Stack>
   );
 }
