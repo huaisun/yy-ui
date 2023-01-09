@@ -14,7 +14,7 @@ const actions = [
 export default function Home() {
   const { themeStretch } = useSettings();
   return (
-    <Page title="General: App">
+    <Page title="首页">
       <Container sx={{ pr: 1, pl: 1 }} maxWidth={themeStretch ? false : 'xl'}>
         <Search />
         <Grid container spacing={3}>
