@@ -1,17 +1,13 @@
 import {
   Box,
   Button,
-  Card,
   FormControl,
-  IconButton,
   InputAdornment,
-  InputLabel,
   MenuItem,
   Select,
   Stack,
   TextField,
 } from '@mui/material';
-import { GridSearchIcon } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { SearchIcon } from '../../theme/overrides/CustomIcons';
 

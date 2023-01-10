@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import Iconify from '../../components/Iconify';
 import WebsiteList from '../../components/home/WebsiteList';
 import WebsiteDialog from '../../components/home/WebsiteDialog';
+import FolderDialog from '../../components/home/FolderDialog';
 
 const TabsWrapperStyle = styled('div')(({ theme }) => ({
   width: '100%',
@@ -44,15 +45,25 @@ export default function CommonUse() {
     setSpaceValue(value);
   };
 
-  const [visible, setVisible] = useState(false);
-
-  const openDialog = () => {
-    setVisible(true);
+  const [websiteVisible, setWebsiteVisible] = useState(false);
+  const [folderVisible, setFolderVisible] = useState(false);
+  const [currentWebsite, setCurrentWebsite] = useState();
+  const [currentFolder, setCurrentFolder] = useState();
+  const openWebsiteDialog = (data) => {
+    setCurrentWebsite({
+      name: data.name,
+      website: data.website,
+    });
+    console.log(currentWebsite);
+    setWebsiteVisible(true);
   };
 
-  const closeDialog = () => {
-    setVisible(false);
+  const openFolderDialog = () => {
+    setFolderVisible(true);
+    console.log(spaceValue);
+    setCurrentFolder({});
   };
+
   const PROFILE_TABS = [
     {
       value: '1',
@@ -108,7 +119,7 @@ export default function CommonUse() {
         <IconButton>
           <Iconify icon={'material-symbols:arrow-forward-rounded'} sx={{ width: 20, height: 20, mr: 0.5 }} />
         </IconButton>
-        <IconButton color="warning">
+        <IconButton color="warning" onClick={openFolderDialog}>
           <Iconify icon={'material-symbols:edit'} sx={{ width: 20, height: 20, mr: 0.5 }} />
         </IconButton>
         <IconButton color="error">
@@ -125,12 +136,23 @@ export default function CommonUse() {
               viewNumber={data.viewNumber}
               likeNumber={data.likeNumber}
               starNumber={data.starNumber}
-              handleModalOpen={openDialog}
+              handleModalOpen={() => openWebsiteDialog(data)}
             />
           ))}
         </Stack>
       </List>
-      <WebsiteDialog visible={visible} closeDialog={closeDialog} />
+      <WebsiteDialog
+        isEdit
+        visible={websiteVisible}
+        closeDialog={() => setWebsiteVisible(false)}
+        currentWebsite={currentWebsite}
+      />
+      <FolderDialog
+        isEdit
+        visible={folderVisible}
+        closeDialog={() => setFolderVisible(false)}
+        currentFolder={currentFolder}
+      />
     </Card>
   );
 }
