@@ -1,6 +1,19 @@
-import { Card, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from '@mui/material';
 import { GridSearchIcon } from '@mui/x-data-grid';
 import { useState } from 'react';
+import { SearchIcon } from '../../theme/overrides/CustomIcons';
 
 export default function Search() {
   const [engine, setEngine] = useState(1);
@@ -53,24 +66,9 @@ export default function Search() {
     },
   ];
   return (
-    <Card
-      sx={{
-        mb: 3,
-        width: '100%',
-        position: 'relative',
-        pl: 2,
-        pr: 2,
-      }}
-    >
-      <FormControl variant="standard" sx={{ m: 1, minWidth: 80 }}>
-        <InputLabel id="demo-simple-select-standard-label">搜索引擎</InputLabel>
-        <Select
-          labelId="demo-simple-select-standard-label"
-          id="demo-simple-select-standard"
-          value={engine}
-          onChange={handleChange}
-          label="搜索引擎"
-        >
+    <Box>
+      <FormControl variant="standard" sx={{ mb: 2, mr: 2, minWidth: 80 }}>
+        <Select size="small" variant="outlined" value={engine} onChange={handleChange}>
           {seData.map((se) => (
             <MenuItem key={se.value} value={se.value}>
               {se.name}
@@ -78,23 +76,29 @@ export default function Search() {
           ))}
         </Select>
       </FormControl>
-      <FormControl variant="standard" sx={{ m: 1, minWidth: 120, maxWidth: 550 }} fullWidth>
+      <FormControl variant="standard" sx={{ mb: 2, minWidth: 120, maxWidth: 550 }} fullWidth>
         <Stack direction="row">
           <TextField
-            id="standard-search"
-            label="请输入搜索内容"
-            type="search"
-            variant="standard"
+            placeholder="搜索..."
+            size="small"
             fullWidth
+            variant="outlined"
             value={searchContent}
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon htmlColor="#919eab" />
+                </InputAdornment>
+              ),
+            }}
           />
-          <IconButton aria-label="search" color="secondary" sx={{ mt: 1 }} onClick={searchEngine}>
-            <GridSearchIcon />
-          </IconButton>
+          <Button sx={{ ml: 1 }} color="info" variant="text" onClick={searchEngine}>
+            搜索
+          </Button>
         </Stack>
       </FormControl>
-    </Card>
+    </Box>
   );
 }

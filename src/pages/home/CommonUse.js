@@ -1,5 +1,5 @@
 import List from '@mui/material/List';
-import { Card, Tabs, Tab, Stack, Divider } from '@mui/material';
+import { Card, Tabs, Tab, Stack, Divider, IconButton } from '@mui/material';
 import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Iconify from '../../components/Iconify';
@@ -101,6 +101,20 @@ export default function CommonUse() {
           ))}
         </Tabs>
       </TabsWrapperStyle>
+      <Stack direction="row" justifyContent="flex-end">
+        <IconButton>
+          <Iconify icon={'material-symbols:arrow-back-rounded'} sx={{ width: 20, height: 20, mr: 0.5 }} />
+        </IconButton>
+        <IconButton>
+          <Iconify icon={'material-symbols:arrow-forward-rounded'} sx={{ width: 20, height: 20, mr: 0.5 }} />
+        </IconButton>
+        <IconButton color="warning">
+          <Iconify icon={'material-symbols:edit'} sx={{ width: 20, height: 20, mr: 0.5 }} />
+        </IconButton>
+        <IconButton color="error">
+          <Iconify icon={'material-symbols:delete-forever'} sx={{ width: 20, height: 20, mr: 0.5 }} />
+        </IconButton>
+      </Stack>
       <List sx={{ minWidth: 320, overflow: 'auto' }}>
         <Stack divider={<Divider orientation="vertical" flexItem />} direction={{ xs: 'column', md: 'row' }}>
           {rankData.map((data) => (
