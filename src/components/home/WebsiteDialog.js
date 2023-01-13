@@ -24,7 +24,6 @@ export default function WebsiteDialog(props) {
   const closeDialog = () => props.closeDialog();
   const isEdit = props?.isEdit || false;
   const { currentWebsite } = props;
-  console.log(currentWebsite);
 
   const NewWebsiteSchema = Yup.object().shape({
     name: Yup.string().required('网址标题必填'),
@@ -33,7 +32,6 @@ export default function WebsiteDialog(props) {
 
   const defaultValues = useMemo(
     () => ({
-      folder: currentWebsite?.folder || '',
       name: currentWebsite?.name || '',
       website: currentWebsite?.website || '',
     }),
@@ -48,14 +46,11 @@ export default function WebsiteDialog(props) {
 
   const {
     reset,
-    setValue,
-    getValues,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
   const [folder, setFolder] = useState();
-
   const cancelClick = () => {
     closeDialog();
     reset();
@@ -66,9 +61,11 @@ export default function WebsiteDialog(props) {
     { label: 'Pulp Fiction', id: 2 },
   ];
 
-  const onSubmit = async () => {
+  const onSubmit = async (data) => {
     try {
+      console.log(data, folder);
       await new Promise((resolve) => setTimeout(resolve, 500));
+      closeDialog();
       reset();
       enqueueSnackbar('Create success!');
     } catch (error) {
@@ -84,16 +81,17 @@ export default function WebsiteDialog(props) {
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={3} mb={2}>
               <Box>
-                <Typography sx={{ fontSize: 12, color: '#919eab' }}>PS: 文件夹若不选, 默认为常用</Typography>
+                <Typography sx={{ fontSize: 12, color: '#919eab', mb: 1 }}>PS: 文件夹若不选, 默认为常用</Typography>
                 <Autocomplete
                   noOptionsText={'无搜索结果'}
                   disablePortal
                   autoHighlight
-                  value={folder}
-                  onChange={(event, newValue) => {
+                  value={folder || null}
+                  onChange={(_, newValue) => {
                     setFolder(newValue);
                   }}
                   options={spaceList}
+                  isOptionEqualToValue={(option, value) => option.id === value.id}
                   renderInput={(params) => <TextField {...params} label="文件夹" />}
                 />
               </Box>
@@ -102,19 +100,12 @@ export default function WebsiteDialog(props) {
                 name="website"
                 label="网址URL"
                 placeholder="https://xxx.xxx.xxx"
-                value={getValues('website')}
-                onChange={(event) => setValue('website', event.target.value)}
                 InputLabelProps={{ shrink: true }}
               />
-              <RHFTextField
-                name="name"
-                label="网址标题"
-                value={getValues('name')}
-                onChange={(event) => setValue('name', event.target.value)}
-              />
+              <RHFTextField name="name" label="网址标题" />
             </Stack>
             <Stack direction="row" spacing={2} justifyContent="flex-end">
-              <Button variant="" onClick={cancelClick}>
+              <Button variant="text" onClick={cancelClick}>
                 取 消
               </Button>
               <LoadingButton type="submit" variant="contained" loading={isSubmitting}>

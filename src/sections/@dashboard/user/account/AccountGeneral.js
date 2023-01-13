@@ -41,6 +41,8 @@ export default function AccountGeneral() {
     isPublic: user?.isPublic || '',
   };
 
+  console.log(defaultValues);
+
   const methods = useForm({
     resolver: yupResolver(UpdateUserSchema),
     defaultValues,

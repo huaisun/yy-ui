@@ -54,7 +54,6 @@ export default function CommonUse() {
       name: data.name,
       website: data.website,
     });
-    console.log(currentWebsite);
     setWebsiteVisible(true);
   };
 
